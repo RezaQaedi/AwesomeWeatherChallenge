@@ -1,3 +1,4 @@
+using AwesomeWeatherChallenge;
 using AwesomeWeatherChallenge.Abstraction;
 using AwesomeWeatherChallenge.Persistence;
 using AwesomeWeatherChallenge.Service;
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddFluentMigrator(builder.Configuration);
+builder.Services.AddScoped<IDbConnetionFactory, DbConnetionFactory>(_ => new DbConnetionFactory(builder.Configuration.GetConnectionString("Application")!));
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.Decorate<IWeatherService, WeatherServiceStored>();
@@ -26,7 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// run MigrationRunner on startUp
+// run MigrationRunner on start-up
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
 {
     var runner = serviceScope.ServiceProvider.GetRequiredService<IMigrationRunner>();

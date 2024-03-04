@@ -1,7 +1,9 @@
-﻿namespace AwesomeWeatherChallenge.Abstraction;
+﻿using AwesomeWeatherChallenge.Persistence.Entity;
+
+namespace AwesomeWeatherChallenge.Abstraction;
 
 public interface IRepository
 {
-    public Task<string?> GetLastWeatherReportAsync();
-    public Task AddAsync(string report);
+    public Task<WeatherReport?> GetLastWeatherReportAsync(CancellationToken cs);
+    public Task AddAsync(WeatherReport report, CancellationToken cs);
 }

@@ -1,14 +1,21 @@
-﻿namespace AwesomeWeatherChallenge.Abstraction;
+﻿using AwesomeWeatherChallenge.Persistence.Entity;
+using Dapper;
 
-internal class Repository(IConfiguration configuration) : IRepository
+namespace AwesomeWeatherChallenge.Abstraction;
+
+internal class Repository(IDbConnetionFactory connetionFactory) : IRepository
 {
-    public Task AddAsync(string report)
+    public async Task AddAsync(WeatherReport report, CancellationToken cs)
     {
-        throw new NotImplementedException();
+        using var connetion = connetionFactory.CreateConnetion();
+        // return result to caller ? 
+        var result = await connetion.ExecuteAsync(new CommandDefinition("INSERT INTO Reports ([Data], [CreatedAt]) Values (@Data, @CreatedAt)", report, cancellationToken: cs));
     }
 
-    public Task<string?> GetLastWeatherReportAsync()
+    public async Task<WeatherReport?> GetLastWeatherReportAsync(CancellationToken cs)
     {
-        throw new NotImplementedException();
+        using var connetion = connetionFactory.CreateConnetion();
+        return await connetion.QuerySingleOrDefaultAsync<WeatherReport>(
+            new CommandDefinition("SELECT TOP 1 * FROM Reports ORDER BY CreatedAt DESC", cancellationToken: cs));
     }
 }

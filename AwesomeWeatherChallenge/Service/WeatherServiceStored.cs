@@ -1,4 +1,5 @@
 ﻿using AwesomeWeatherChallenge.Abstraction;
+using AwesomeWeatherChallenge.Persistence.Entity;
 
 namespace AwesomeWeatherChallenge.Service;
 
@@ -10,11 +11,11 @@ public class WeatherServiceStored(IWeatherService inner, IRepository repository)
 
         if (report is null)
         {
-            return await repository.GetLastWeatherReportAsync();
+            return (await repository.GetLastWeatherReportAsync(cs))?.Data;
         }
         else
         {
-            await repository.AddAsync(report);
+            await repository.AddAsync(new WeatherReport() { CreatedAt = DateTime.UtcNow, Data = report }, cs);
             return report;
         }
     }
