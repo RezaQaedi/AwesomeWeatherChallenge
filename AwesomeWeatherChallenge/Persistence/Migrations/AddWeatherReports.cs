@@ -14,7 +14,7 @@ public class AddWeatherReports : Migration
     {
         Create.Table("Reports")
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
-            .WithColumn("Data").AsString()
+            .WithColumn("Data").AsString(int.MaxValue)
             .WithColumn("CreatedAt").AsDateTime2();
     }
 }
