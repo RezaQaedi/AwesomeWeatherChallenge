@@ -19,6 +19,7 @@ builder.Services.AddHttpClient("Forcast", client =>
 });
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.Decorate<IWeatherService, WeatherServiceStored>();
+builder.Services.RegisterQuartz();
 
 var app = builder.Build();
 

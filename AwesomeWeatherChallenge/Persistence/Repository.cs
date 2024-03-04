@@ -18,4 +18,10 @@ internal class Repository(IDbConnetionFactory connetionFactory) : IRepository
         return await connetion.QuerySingleOrDefaultAsync<WeatherReport>(
             new CommandDefinition("SELECT TOP 1 * FROM Reports ORDER BY CreatedAt DESC", cancellationToken: cs));
     }
+
+    public async Task PruneAsync(CancellationToken cs)
+    {
+        using var connection = connetionFactory.CreateConnetion();
+        await connection.ExecuteAsync(new CommandDefinition("DELETE Reports WHERE CAST(Reports.CreatedAt AS DATE) < CAST(DATEADD(DAY, -15, GETUTCDATE()) AS DATE)", cancellationToken: cs));
+    }
 }
