@@ -1,12 +1,14 @@
 ﻿using AwesomeWeatherChallenge.Abstraction;
 
+namespace AwesomeWeatherChallenge;
+
 internal class WeatherService(IHttpClientFactory clientFactory, ILogger<WeatherService> logger) : IWeatherService
 {
-    private const string Url = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m";
+    private const string Url = "forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m";
 
     public async Task<string?> GetWeatherReportAsync(CancellationToken cs)
     {
-        var client = clientFactory.CreateClient();
+        var client = clientFactory.CreateClient("Forcast");
 
         try
         {
