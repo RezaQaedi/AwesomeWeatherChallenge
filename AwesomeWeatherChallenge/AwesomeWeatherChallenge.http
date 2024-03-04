@@ -1,6 +1,6 @@
-@AwesomeWeatherChallenge_HostAddress = http://localhost:5116
+@AwesomeWeatherChallenge_HostAddress = https://localhost:7166
 
-GET {{AwesomeWeatherChallenge_HostAddress}}/weatherforecast/
+GET {{AwesomeWeatherChallenge_HostAddress}}/Weather/getWeatherReport
 Accept: application/json
 
 ###
